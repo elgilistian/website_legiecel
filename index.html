@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dokumentasi Foto dan Video</title>
+    <style>
+        /* Gaya dasar */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(45deg, #00aaff, #0066cc, #004d7a, #003366);
+            background-size: 400% 400%;
+            animation: gradientAnimation 10s ease infinite;
+            color: #fff;
+        }
+
+        @keyframes gradientAnimation {
+            0% {background-position: 0% 50%;}
+            50% {background-position: 100% 50%;}
+            100% {background-position: 0% 50%;}
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 15px;
+        }
+
+        .login-container, .content-container {
+            text-align: center;
+            background: rgba(0, 51, 102, 0.85);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.6);
+            max-width: 500px;
+            width: 100%;
+            transition: transform 0.3s ease;
+        }
+
+        .login-container:hover, .content-container:hover {
+            transform: scale(1.05);
+        }
+
+        .login-container h2, .content-container h1 {
+            color: #ffcc00;
+        }
+
+        input[type="password"], .login-container button {
+            padding: 12px;
+            margin: 12px 0;
+            width: 100%;
+            border: none;
+            border-radius: 10px;
+            box-sizing: border-box;
+        }
+
+        input[type="password"] {
+            outline: none;
+            background: #333;
+            color: #fff;
+            font-size: 18px;
+            transition: background 0.3s ease;
+        }
+
+        input[type="password"]:focus {
+            background: #555;
+        }
+
+        button {
+            background: #ffcc00;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        button:hover {
+            background: #e2a800;
+            transform: scale(1.05);
+        }
+
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .gallery-item {
+            position: relative;
+            width: 100%;
+            max-width: 240px;
+            cursor: pointer;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .gallery-item img, .gallery-item video {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .gallery-description {
+            padding: 10px;
+            font-size: 16px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #ffcc00;
+            border-top: 2px solid #ffcc00;
+            border-radius: 0 0 12px 12px;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            max-width: 80%;
+            max-height: 80%;
+            text-align: center;
+            color: #fff;
+        }
+
+        .modal-content img, .modal-content video {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .modal-description {
+            margin-top: 15px;
+            font-size: 18px;
+            color: #ffcc00;
+        }
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 35px;
+            color: #ffcc00;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .close:hover {
+            transform: rotate(180deg);
+        }
+
+        /* Responsif */
+        @media (max-width: 768px) {
+            .gallery-item {
+                max-width: 100%;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .gallery {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="login-container" id="loginContainer">
+        <h2>Akses Terbatas</h2>
+        <p>Masukkan password untuk melihat dokumentasi</p>
+        <input type="password" id="passwordInput" placeholder="Masukkan password">
+        <button onclick="checkPassword()">Masuk</button>
+    </div>
+
+    <div class="content-container" id="contentContainer" style="display: none;">
+        <h1>Dokumentasi Foto dan Video</h1>
+        <p>Kumpulan dokumentasi dalam bentuk foto dan video.</p>
+        <div class="gallery">
+            <!-- Item galeri contoh -->
+            <div class="gallery-item" onclick="openModal('Video 1', 'Deskripsi video pertama.', 'nongki1.mp4', true)">
+                <video src="nongki1.mp4"></video>
+                <div class="gallery-description">pidio nongki pertama setelah pacaran</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('Video 1', 'Deskripsi video pertama.', 'sw1.mp4', true)">
+                <video src="sw1.mp4"></video>
+                <div class="gallery-description">sw pertama yang dibuat ecel anak kicik katanya pidionya lucu</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('Video 1', 'Deskripsi video pertama.', 'legi.mp4', true)">
+                <video src="legi.mp4"></video>
+                <div class="gallery-description">nongki lagi tapi beda tempat</div>
+            </div>
+            <div class="gallery-item" onclick="openModal('Video 1', 'Deskripsi video pertama.', 'sore.mp4', true)">
+                <video src="sore.mp4"></video>
+                <div class="gallery-description">sore bersama di taman aero</div>
+            </div>
+            <!-- <div class="gallery-item" onclick="openModal('Foto 2', 'Deskripsi foto kedua.', 'https://via.placeholder.com/600')">
+                <img src="https://via.placeholder.com/200" alt="Foto 2">
+                <div class="gallery-description">Foto 2 - Deskripsi singkat</div>
+            </div> -->
+            <!-- Tambahkan foto/video lainnya di sini -->
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal" id="modal">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <div class="modal-content" id="modalContent">
+        <img id="modalImage" src="" alt="">
+        <video id="modalVideo" controls style="display: none;"></video>
+        <div class="modal-description" id="modalDescription"></div>
+    </div>
+</div>
+
+<script>
+    // Fungsi untuk memeriksa password
+    function checkPassword() {
+        const passwordInput = document.getElementById("passwordInput").value;
+        const loginContainer = document.getElementById("loginContainer");
+        const contentContainer = document.getElementById("contentContainer");
+
+        if (passwordInput === "041124") {
+            loginContainer.style.display = "none";
+            contentContainer.style.display = "block";
+        } else {
+            alert("Password salah! Silakan coba lagi.");
+        }
+    }
+
+    // Fungsi untuk membuka modal
+    function openModal(title, description, src, isVideo = false) {
+        const modal = document.getElementById("modal");
+        const modalImage = document.getElementById("modalImage");
+        const modalVideo = document.getElementById("modalVideo");
+        const modalDescription = document.getElementById("modalDescription");
+
+        modal.style.display = "flex";
+        modalDescription.innerHTML = description;
+
+        if (isVideo) {
+            modalVideo.style.display = "block";
+            modalImage.style.display = "none";
+            modalVideo.src = src;
+        } else {
+            modalImage.style.display = "block";
+            modalVideo.style.display = "none";
+            modalImage.src = src;
+        }
+    }
+
+    // Fungsi untuk menutup modal
+    function closeModal() {
+        const modal = document.getElementById("modal");
+        modal.style.display = "none";
+    }
+</script>
+
+</body>
+</html>
